@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: industrial-dashboard-deployment
+  labels:
+    app: predictive-industrial-hub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: predictive-industrial-hub
+  template:
+    metadata:
+      labels:
+        app: predictive-industrial-hub
+    spec:
+      containers:
+      - name: web-dashboard
+        image: sriram1108/industrial-app:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: industrial-dashboard-service
+spec:
+  type: NodePort
+  selector:
+    app: predictive-industrial-hub
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32066
